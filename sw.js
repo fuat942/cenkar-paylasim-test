@@ -1,0 +1,3 @@
+self.addEventListener('fetch',e=>{let u=new URL(e.request.url);
+if(e.request.method==='POST'&&u.pathname.endsWith('/share-target'))e.respondWith((async()=>{let f=await e.request.formData(),file=f.get('file');
+if(file&&file.type.startsWith('image/')){let d=await new Promise((res,rej)=>{let r=indexedDB.open('cenkar_share_test',1);r.onupgradeneeded=()=>r.result.createObjectStore('files',{keyPath:'id'});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});await new Promise((res,rej)=>{let t=d.transaction('files','readwrite');t.objectStore('files').put({id:'latest',name:file.name,blob:file});t.oncomplete=res;t.onerror=()=>rej(t.error)})}return Response.redirect('./',303)})()});

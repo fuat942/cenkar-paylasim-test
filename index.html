@@ -1,0 +1,11 @@
+<!doctype html><html lang="tr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cenkar Paylaşım Test</title><link rel="manifest" href="manifest.json">
+<style>body{font-family:Arial;background:#f4f6f8;padding:24px;color:#111827}.card{max-width:520px;margin:auto;background:white;padding:22px;border-radius:18px}img{max-width:100%;margin-top:14px;border-radius:12px}.ok{padding:12px;background:#dcfce7;border-radius:10px;font-weight:700}</style>
+</head><body><div class="card"><h1>🚚 Cenkar Paylaşım Test</h1>
+<div id="status" class="ok">Test uygulaması hazır.</div>
+<p>WhatsApp'tan fotoğrafı Paylaş → Cenkar Test ile gönder.</p><div id="result"></div></div>
+<script>
+async function db(){return new Promise((res,rej)=>{let r=indexedDB.open('cenkar_share_test',1);r.onupgradeneeded=()=>r.result.createObjectStore('files',{keyPath:'id'});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+(async()=>{try{await navigator.serviceWorker.register('sw.js')}catch(e){};let d=await db();let r=d.transaction('files').objectStore('files').get('latest');r.onsuccess=()=>{let x=r.result;if(!x)return;let u=URL.createObjectURL(x.blob);document.getElementById('status').textContent='✅ FOTOĞRAF UYGULAMAYA GELDİ';document.getElementById('result').innerHTML='<p><b>Dosya:</b> '+(x.name||'fotoğraf')+'</p><img src="'+u+'">'}})();
+</script></body></html>
